@@ -1,0 +1,68 @@
+/* src/app/globals.css */
+@import "tailwindcss"; /* Mantenemos esta forma de importar Tailwind */
+
+/* Importa tus fuentes de Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Open+Sans:wght@400;600&family=Bebas+Neue&display=swap');
+
+/* Definición de variables CSS globales con tus colores de marca */
+:root {
+  --background-color: theme('colors.brand-black'); /* Usando theme() para acceder a tu color */
+  --foreground-color: theme('colors.brand-white');
+  --accent-color: theme('colors.brand-red');
+
+  /* O puedes usar los valores hexadecimales directamente si theme() da problemas aquí */
+  /* --background-color: #0A0A0A; */
+  /* --foreground-color: #F5F5F5; */
+  /* --accent-color: #E50914; */
+
+  /* Variables para fuentes si quieres usarlas así,
+     aunque es más común usar las clases de utilidad de Tailwind (font-sans, font-heading) */
+  --font-body: 'Open Sans', sans-serif;
+  --font-headings: 'Montserrat', sans-serif;
+}
+
+/* La directiva @theme inline es interesante, pero para empezar,
+   podemos aplicar los estilos directamente o con clases de Tailwind.
+   Si quieres seguir usándola, asegúrate de que los nombres de las variables coincidan.
+   Ejemplo con @theme inline (si quieres probar):
+   @theme inline {
+     --color-background: var(--background-color);
+     --color-foreground: var(--foreground-color);
+     --font-sans: var(--font-body);
+   }
+*/
+
+body {
+  /* Aplicamos directamente las variables CSS o usamos clases de Tailwind */
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+
+  /* O, usando clases de utilidad de Tailwind después de asegurar que tailwind.config.js es leído: */
+  /* @apply bg-brand-black text-brand-white; */
+
+  font-family: var(--font-body); /* Aplica la fuente base al body */
+  @apply antialiased; /* Utilidad de Tailwind para un mejor suavizado de fuentes */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headings); /* Aplica la fuente de encabezados */
+  /* O, usando clases de utilidad de Tailwind: */
+  /* @apply font-heading; */
+}
+
+/* Tus otras clases personalizadas como .glassmorphic-card pueden ir aquí */
+.glassmorphic-card {
+  @apply bg-white/10 backdrop-blur-lg rounded-xl border border-white/20 shadow-lg;
+}
+
+/* Estilos para Lenis (si los necesitas) */
+html.lenis { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* Ocultar el minimapa (si esto es de otro contexto, puedes quitarlo) */
+@media (max-width: 767px) {
+  .react-flow__minimap {
+    display: none !important;
+  }
+}
