@@ -1,11 +1,8 @@
 // src/app/layout.tsx
 import type { Metadata } from 'next';
-import './globals.css'; // Asegúrate de que esta importación esté presente
+import './globals.css';
 
-export const metadata: Metadata = {
-  title: 'Test Tailwind App',
-  description: 'Testing Tailwind v4 setup',
-};
+export const metadata: Metadata = { /* ... */ };
 
 export default function RootLayout({
   children,
@@ -14,7 +11,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body>
+        <button className="bg-brand-red text-brand-white p-4 m-4">
+          Botón de Prueba en Layout
+        </button>
+        {children}
+      </body>
     </html>
   );
 }
