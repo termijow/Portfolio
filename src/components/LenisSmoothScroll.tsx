@@ -1,43 +1,51 @@
-'use client' // Este componente interactúa con el DOM y estado del navegador
+// src/components/LenisSmoothScroll.tsx
+'use client'; // Este componente interactúa con el DOM y estado del navegador
 
-import { ReactNode, useEffect, useRef } from 'react'
-import Lenis from '@studio-freight/lenis'
-import { usePathname } from 'next/navigation' // Para reiniciar en cambio de ruta
+import { ReactNode, useEffect, useRef } from 'react';
+import Lenis from '@studio-freight/lenis'; // Asegúrate de tenerlo instalado
+import { usePathname } from 'next/navigation';
 
 interface LenisSmoothScrollProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export default function LenisSmoothScroll({ children }: LenisSmoothScrollProps) {
-  const lenisRef = useRef<Lenis | null>(null)
-  const pathname = usePathname()
+  const lenisRef = useRef<Lenis | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
+    // Destruir la instancia anterior de Lenis si existe al cambiar de ruta o al desmontar
     if (lenisRef.current) {
-      lenisRef.current.scrollTo(0, { immediate: true }) // Reinicia scroll en cambio de ruta
+      lenisRef.current.destroy();
+      lenisRef.current = null;
     }
-  }, [pathname])
 
-  useEffect(() => {
-    const lenis = new Lenis({
-      lerp: 0.1, // Cuanto menor, más suave (y más "lag")
+    // Crear una nueva instancia de Lenis
+    const newLenisInstance = new Lenis({
+      lerp: 0.1, // Ajusta para la "suavidad"
       smoothWheel: true,
-      // Otros parámetros de Lenis si los necesitas
-    })
-    lenisRef.current = lenis
+      // wrapper: window, // Por defecto es window, puedes especificar otro si es necesario
+      // content: document.documentElement, // Por defecto es document.documentElement
+    });
+    lenisRef.current = newLenisInstance;
+
+    // Scroll al inicio en cambio de ruta
+    newLenisInstance.scrollTo(0, { immediate: true });
 
     function raf(time: number) {
-      lenis.raf(time)
-      requestAnimationFrame(raf)
+      newLenisInstance.raf(time);
+      requestAnimationFrame(raf);
     }
+    requestAnimationFrame(raf);
 
-    requestAnimationFrame(raf)
-
+    // Limpieza al desmontar el componente
     return () => {
-      lenis.destroy()
-      lenisRef.current = null
-    }
-  }, [])
+      if (lenisRef.current) {
+        lenisRef.current.destroy();
+        lenisRef.current = null;
+      }
+    };
+  }, [pathname]); // Re-ejecutar el efecto si cambia el pathname
 
-  return <>{children}</>
+  return <>{children}</>;
 }
