@@ -12,7 +12,7 @@
 
 body {
   /* Aplicamos tus colores de marca y la fuente base del cuerpo */
-  @apply bg-brand-black text-brand-white font-sans antialiased;
+  @apply bg-brand-black text-brand-white font-sans antialiased overflow-x-hidden;
   /* `font-sans` ahora usará 'Open Sans' según tu config */
 }
 

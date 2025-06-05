@@ -2,8 +2,8 @@
 // Por ahora, importaremos las secciones aunque no existan, para planificar
 import HeroSection from '@/components/sections/HeroSection';
 import AboutSection from '@/components/sections/AboutSection';
-// import ProjectsSection from '@/components/sections/ProjectsSection';
-// import SkillsSection from '@/components/sections/SkillsSection';
+import ProjectsSection from '@/components/sections/ProjectsSection';
+import SkillsSection from '@/components/sections/SkillsSection';
 // import ContactSection from '@/components/sections/ContactSection';
 
 export default function HomePage() {
@@ -13,6 +13,8 @@ export default function HomePage() {
       {/* <HeroSection /> */}
       <HeroSection />
       <AboutSection />
+      <ProjectsSection />
+      <SkillsSection />
       <div id="placeholder-content" className="min-h-screen flex items-center justify-center">
         <h1 className="text-4xl font-heading text-brand-red">Contenido Principal Próximamente...</h1>
       </div>
@@ -24,8 +26,6 @@ export default function HomePage() {
       </div>
 
       
-        {/* <ProjectsSection /> */}
-        {/* <SkillsSection /> */}
         {/* <ContactSection /> */}
     </>
   );
