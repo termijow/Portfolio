@@ -3,9 +3,9 @@ import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}', // Añadí .js, .jsx, .mdx por si acaso
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/globals.css', // Importante: Asegúrate de que Tailwind "vea" tu globals.css si usas @apply
+    './src/app/globals.css', // Bueno tenerlo para @apply
   ],
   theme: {
     extend: {
@@ -16,5 +16,4 @@ const config: Config = {
   },
   plugins: [],
 };
-
 export default config;

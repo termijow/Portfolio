@@ -1,6 +1,6 @@
 // src/app/layout.tsx
 import type { Metadata } from 'next';
-import './styles/globals.css'; // Asegúrate de que esta importación esté presente
+import './globals.css'; // Asegúrate de que esta importación esté presente
 
 export const metadata: Metadata = {
   title: 'Test Tailwind App',
