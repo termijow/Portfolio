@@ -4,252 +4,195 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText'; // Necesitarás GSAP Club para SplitText, o una alternativa
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText); // Si usas SplitText oficial
 
-// SkillsData y SkillCard (sin cambios)
+// Lista de tus habilidades
 const skillsData = [
-  { name: 'JavaScript', level: 90 }, { name: 'TypeScript', level: 85 },
-  { name: 'React', level: 90 }, { name: 'Next.js', level: 80 },
-  { name: 'Node.js', level: 85 }, { name: 'NestJS', level: 80 },
-  { name: 'PostgreSQL', level: 75 }, { name: 'MongoDB', level: 70 },
-  { name: 'HTML5', level: 95 }, { name: 'CSS3 & Tailwind', level: 90 },
-  { name: 'Git & GitHub', level: 85 }, { name: 'Docker', level: 65 },
+  { name: 'JavaScript', level: 90, category: 'Frontend & Backend' },
+  { name: 'TypeScript', level: 85, category: 'Frontend & Backend' },
+  { name: 'React', level: 90, category: 'Frontend' },
+  { name: 'Next.js', level: 85, category: 'Frontend' },
+  { name: 'Node.js', level: 80, category: 'Backend' },
+  { name: 'NestJS', level: 80, category: 'Backend' },
+  { name: 'PostgreSQL', level: 75, category: 'Database' },
+  { name: 'MongoDB', level: 70, category: 'Database' },
+  { name: 'Git & GitHub', level: 90, category: 'Tools' },
+  { name: 'Docker', level: 65, category: 'Tools' },
+  { name: 'HTML5', level: 95, category: 'Frontend' },
+  { name: 'CSS3 & Tailwind', level: 90, category: 'Frontend' },
 ];
-interface SkillCardProps { name: string; level: number; delay?: number; }
-const SkillCard: React.FC<SkillCardProps> = ({ name, level, delay = 0 }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const progressBarRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (cardRef.current && progressBarRef.current) {
-      const cardEl = cardRef.current;
-      const progressEl = progressBarRef.current;
-      let anim: gsap.core.Tween | undefined, progressAnim: gsap.core.Tween | undefined;
-      const st = ScrollTrigger.create({
-        trigger: cardEl, start: 'top 90%', toggleActions: 'play none none reset',
-        onEnter: () => {
-          gsap.set(cardEl, { opacity: 0, y: 50, scale: 0.9 });
-          gsap.set(progressEl, { width: '0%' });
-          anim = gsap.to(cardEl, { opacity: 1, y: 0, scale: 1, duration: 0.8, delay, ease: 'power3.out' });
-          progressAnim = gsap.to(progressEl, { width: `${level}%`, duration: 1.5, delay: delay + 0.3, ease: 'power2.inOut' });
-        },
-        onLeaveBack: () => { 
-            // Al salir hacia arriba, reseteamos explícitamente para la próxima entrada
-            if (anim) anim.progress(0).pause(); // Vuelve al inicio y pausa
-            if (progressAnim) progressAnim.progress(0).pause();
-            gsap.set(cardEl, { opacity: 0, y: 50, scale: 0.9 }); // Re-establecer estado inicial
-            gsap.set(progressEl, { width: '0%' });
-        }
-      });
-      return () => { st.kill(); if (anim) anim.kill(); if (progressAnim) progressAnim.kill(); };
-    }
-  }, [name, level, delay]);
-  return (
-    <div ref={cardRef} className="bg-brand-black/50 opacity-0 backdrop-blur-md p-6 rounded-xl border-2 border-brand-red/70 shadow-lg">
-      <h3 className="text-xl font-heading text-brand-white mb-2">{name}</h3>
-      <div className="w-full bg-brand-white/20 rounded-full h-2.5">
-        <div ref={progressBarRef} className="bg-brand-red h-2.5 rounded-full" style={{ width: '0%' }}></div>
-      </div>
-    </div>
-  );
-};
 
+// Componente para una tarjeta de habilidad individual
+const SkillCard = ({ name, level, category }: { name: string; level: number; category: string }) => (
+  <div className="skill-card bg-brand-white/5 backdrop-blur-md border border-brand-white/10 rounded-xl p-6 shadow-lg
+                  hover:border-brand-red/50 transition-all duration-300 transform hover:-translate-y-1">
+    <h4 className="text-xl font-heading text-brand-red mb-2">{name}</h4>
+    <p className="text-sm text-brand-white/70 mb-3 font-sans">{category}</p>
+    <div className="w-full bg-brand-black/30 rounded-full h-2.5">
+      <div
+        className="bg-brand-red h-2.5 rounded-full"
+        style={{ width: `${level}%` }}
+      ></div>
+    </div>
+    <p className="text-xs text-brand-white/60 mt-2 text-right font-sans">{level}%</p>
+  </div>
+);
 
 export default function SkillsSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const titleWrapperRef = useRef<HTMLDivElement>(null);
-  const letterIRef = useRef<HTMLSpanElement>(null);
-  const skillsContentWrapperRef = useRef<HTMLDivElement>(null);
-  const portalRef = useRef<HTMLDivElement>(null);
-
-  const titleText = "HABILIDADES";
-  const iIndex = titleText.indexOf("I");
-  let otherLettersSpans: HTMLSpanElement[] = [];
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleContainerRef = useRef<HTMLDivElement>(null);
+  const titleTextRef = useRef<HTMLHeadingElement>(null); // Para el texto "HABILIDADES"
+  const skillsContentRef = useRef<HTMLDivElement>(null); // Contenedor de las tarjetas de skills
 
   useEffect(() => {
-    if (!sectionRef.current || !titleWrapperRef.current || !letterIRef.current || !skillsContentWrapperRef.current || !portalRef.current) {
-      return;
+    if (!sectionRef.current || !titleContainerRef.current || !titleTextRef.current || !skillsContentRef.current) return;
+
+    // Alternativa a SplitText si no tienes GSAP Club:
+    // Podrías envolver cada letra en un <span> manualmente en el JSX
+    // o usar una librería JS de terceros para dividir el texto.
+    // Por simplicidad conceptual, asumiré que tienes una forma de acceder a las letras.
+    // Si NO tienes SplitText, el efecto será más difícil de lograr exactamente como se describe.
+    // En ese caso, podríamos escalar todo el título.
+
+    let splitTitle: SplitText | null = null;
+    let targetLetter: HTMLElement | null = null;
+
+    // Intenta usar SplitText. Si falla, podríamos tener un fallback o un aviso.
+    try {
+      splitTitle = new SplitText(titleTextRef.current, { type: 'chars' });
+      // Seleccionamos la letra central o una específica. Ej: la 'I' o la 'L'
+      // "HABILIDADES" tiene 11 letras. La 6ta letra (índice 5) es 'I'.
+      if (splitTitle.chars.length > 5) {
+        targetLetter = splitTitle.chars[5] as HTMLElement; // La 'I'
+      } else {
+        targetLetter = titleTextRef.current; // Fallback: animar todo el título
+      }
+    } catch (e) {
+      console.warn("SplitText no está disponible (requiere GSAP Club). El efecto de zoom de letra será diferente.");
+      targetLetter = titleTextRef.current; // Fallback a animar todo el título
     }
 
-    if (titleWrapperRef.current) {
-        otherLettersSpans = Array.from(titleWrapperRef.current.children).filter((_, index) => index !== iIndex) as HTMLSpanElement[];
-    }
 
     const ctx = gsap.context(() => {
-      // Animación inicial del título (antes del pin)
-      const initialTitleAnimation = gsap.fromTo(titleWrapperRef.current!.children, 
-        { opacity: 0, y: 80, scale: 0.5 }, 
-        {
-          opacity: 1, y: 0, scale: 1, stagger: 0.07, duration: 1, ease: 'expo.out',
-          paused: true // Inicia pausada, ScrollTrigger la controlará
-        }
-      );
-      ScrollTrigger.create({
-          trigger: sectionRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none reset', // REINICIA la animación del título al salir/entrar
-          animation: initialTitleAnimation, // Vincula la animación
-          onEnter: () => initialTitleAnimation.play(),
-          onLeaveBack: () => initialTitleAnimation.progress(0).pause(), // Resetea y pausa al salir hacia arriba
-      });
-
-
-      const masterTl = gsap.timeline({
+      // Timeline principal para la animación de zoom y revelado
+      const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top top',
-          end: '+=3500',
-          pin: true,
-          scrub: 1.2,
-          // markers: { startColor: "green", endColor: "red", indent: 200 },
-          invalidateOnRefresh: true, // Importante para recalcular en resize
-          onEnter: () => { // Al entrar en la zona de pin
-            gsap.set(titleWrapperRef.current, { display: 'flex' }); // Asegurar que el título sea visible
-            gsap.set(portalRef.current, { display: 'block', opacity:0, width:0, height:0, top:'50%', left:'50%', xPercent:-50, yPercent:-50 }); // Resetear portal
-            gsap.set(skillsContentWrapperRef.current, { opacity: 0, scale: 0.9}); // Resetear skills content
-          },
-          onLeaveBack: () => { // Al salir de la zona de pin hacia arriba
-            masterTl.progress(0).pause(); // Resetea la masterTl
-            gsap.set(titleWrapperRef.current, { display: 'flex', opacity:1, scale:1, x:0, y:0 }); // Restaurar título
-            // Las letras individuales del título se resetearán por la animación inicial del título
-            gsap.set(portalRef.current, { display: 'none', opacity: 0 }); // Ocultar portal
-            gsap.set(skillsContentWrapperRef.current, { opacity: 0 }); // Ocultar skills
-            initialTitleAnimation.progress(0).pause(); // Asegurar que la animación inicial del título también se resetee
-          }
+          start: 'top top',       // Cuando la parte superior de la sección llega a la parte superior de la ventana
+          end: '+=200%',          // La animación durará el equivalente a 200% de la altura de la ventana de scroll
+          scrub: 1,              // Vinculado al scroll, con 1s de suavizado
+          pin: true,             // Fija la sección mientras dura la animación
+          anticipatePin: 1,      // Ayuda a evitar saltos en algunos navegadores
+          // markers: {startColor: "purple", endColor: "orange", indent: 200},
         }
       });
 
-      let targetX = 0, targetY = 0, initialTitleScale = 1;
-      let iRectInitial: DOMRect | undefined;
+      // 1. Animación del Título "HABILIDADES"
+      // Primero, el título está normal
+      tl.set(titleTextRef.current, { opacity: 1, scale: 1 });
+      tl.set(skillsContentRef.current, { opacity: 0, scale: 0.5, y: 100 }); // Contenido de skills oculto
 
-      // 1. Zoom al título
-      masterTl.to(titleWrapperRef.current, {
-        onStart: () => {
-          if (titleWrapperRef.current && letterIRef.current && portalRef.current) {
-            iRectInitial = letterIRef.current.getBoundingClientRect();
-            const viewportCenterX = window.innerWidth / 2;
-            const viewportCenterY = window.innerHeight / 2;
-            targetX = viewportCenterX - (iRectInitial.left + iRectInitial.width / 2);
-            targetY = viewportCenterY - (iRectInitial.top + iRectInitial.height / 2);
-            initialTitleScale = gsap.getProperty(titleWrapperRef.current, "scale") as number || 1;
+      if (targetLetter) {
+        // Hacer que las otras letras se desvanezcan (si tenemos SplitText)
+        if (splitTitle && splitTitle.chars) {
+          const otherChars = splitTitle.chars.filter(char => char !== targetLetter);
+          tl.to(otherChars, { opacity: 0, duration: 0.3, stagger:0.02 }, "<"); // "<" para iniciar al mismo tiempo que la animación anterior
+        }
 
-            gsap.set(portalRef.current, { // Posicionar portal invisiblemente sobre la I
-                display: 'block', // Asegurar que sea block para obtener dimensiones
-                position: 'fixed',
-                top: iRectInitial.top, left: iRectInitial.left,
-                width: iRectInitial.width, height: iRectInitial.height,
-                backgroundColor: 'rgba(245, 245, 245, 0.98)',
-                opacity: 0, zIndex: 40, borderRadius: '3px',
-            });
-          }
-        },
-        x: () => targetX / initialTitleScale,
-        y: () => targetY / initialTitleScale,
-        scale: 4.5,
-        duration: 0.5,
-        ease: 'power2.inOut'
-      }, 0);
-
-      // 2. Desvanecer OTRAS letras
-      if (otherLettersSpans.length > 0) {
-        masterTl.to(otherLettersSpans, {
-          opacity: 0, duration: 0.25, ease: 'power1.in'
-        }, "<0.15");
+        // 2. Zoom en la letra/título objetivo
+        tl.to(targetLetter, {
+          scale: 50,            // Escala masiva
+          opacity: 0,          // Se desvanece mientras escala
+          duration: 1,         // Duración relativa dentro del scrub
+          ease: 'power2.inOut'
+        }, "-=0.2"); // Empieza un poco antes de que las otras letras terminen de desvanecerse
+      } else { // Fallback si no hay targetLetter (ej. no SplitText)
+         tl.to(titleTextRef.current, {
+          scale: 30,
+          opacity: 0,
+          duration: 1,
+          ease: 'power2.inOut'
+        }, "<");
       }
 
-      // 3. La 'I' original se desvanece Y el portal aparece
-      masterTl.to(letterIRef.current, {
-        opacity: 0, duration: 0.2, ease: 'power1.in'
-      }, "<0.1"); 
 
-      masterTl.to(portalRef.current, { // Portal se vuelve visible
-        opacity: 1, duration: 0.05,
-      }, "<");
+      // 3. Revelar el contenido de las habilidades
+      // Este contenido aparece "desde dentro" de la letra que se expande
+      tl.to(skillsContentRef.current, {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        duration: 0.8,       // Duración relativa
+        ease: 'power3.out'
+      }, "-=0.7"); // Se superpone significativamente con el zoom out de la letra
 
-      // 4. Expandir el portal
-      masterTl.to(portalRef.current, {
-        top: '50%', left: '50%', xPercent: -50, yPercent: -50,
-        width: '100vw', height: '100vh',
-        borderRadius: '0%',
-        duration: 0.7, ease: 'expo.inOut',
-      }, ">-0.05");
-
-      // 5. El titleWrapper se desvanece (ya no necesitamos el blur)
-      masterTl.to(titleWrapperRef.current, {
-          opacity: 0, duration: 0.3, ease: 'power1.in',
-          onComplete: () => {
-              if(titleWrapperRef.current) gsap.set(titleWrapperRef.current, {display: 'none'});
+      // 4. Animación de entrada para las tarjetas de skills individuales
+      // Se activará después de que skillsContentRef sea visible
+      // Usaremos un trigger separado para esto, o un delay dentro de la misma timeline
+      // si la duración del pin es suficiente. Por ahora, lo haremos simple:
+      gsap.utils.toArray('.skill-card').forEach((card: any, index) => { // "any" aquí por simplicidad, podrías tiparlo mejor
+        gsap.fromTo(card,
+          { opacity: 0, y: 50, scale: 0.9 },
+          {
+            opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'power2.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 90%', // Cuando la tarjeta entra en vista
+              // scrub: true, // Podrías añadir scrub aquí también si quieres
+              toggleActions: 'play none none none', // Solo se reproduce una vez
+            },
+            delay: index * 0.1 // Stagger manual, ya que el trigger es por tarjeta
           }
-      }, "<0.2");
-
-      // 6. Hacer aparecer el contenido de habilidades
-      gsap.set(skillsContentWrapperRef.current, { // Estado inicial
-        opacity: 0, scale: 0.9,
-        position: 'absolute', top: '50%', left: '50%', xPercent: -50, yPercent: -50,
-        width: '90%', maxWidth: '1024px', zIndex: 45,
+        );
       });
-      masterTl.to(skillsContentWrapperRef.current, {
-        opacity: 1, scale: 1,
-        duration: 0.6, ease: 'power3.out'
-      }, ">-0.4");
 
-      // 7. Desvanecer el portal
-      masterTl.to(portalRef.current, {
-        opacity: 0, duration: 0.5, ease: 'power1.inOut',
-        onComplete: () => {
-          if (portalRef.current) gsap.set(portalRef.current, { display: 'none' });
-        }
-      }, ">-0.2");
-
-    }, sectionRef.current!);
+    }, sectionRef.current); // Fin del contexto GSAP
 
     return () => ctx.revert();
-  }, [iIndex]);
+  }, []);
 
   return (
     <section
       id="skills"
       ref={sectionRef}
-      className="relative w-full min-h-[350vh] py-16 md:py-24 bg-brand-black"
-      style={{ overflowX: 'hidden' }}
+      className="relative w-full min-h-screen bg-brand-black text-brand-white overflow-hidden" // min-h-screen para el título, la altura real será mayor
     >
-      <div ref={portalRef} className="fixed pointer-events-none opacity-0"></div> {/* opacity-0 inicial aquí */}
-
-      <div className="h-screen flex flex-col items-center justify-center container mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          ref={titleWrapperRef}
-          className="text-6xl sm:text-8xl md:text-9xl lg:text-[150px] xl:text-[170px] font-heading font-black text-center text-brand-white select-none relative z-30"
-          style={{ lineHeight: '0.9em', willChange: 'transform, opacity' }}
+      {/* Contenedor del Título para el efecto de Pinning y Zoom */}
+      <div
+        ref={titleContainerRef}
+        className="h-screen w-full flex flex-col justify-center items-center sticky top-0" // Sticky y top-0 son importantes para el pin
+      >
+        <h2
+          ref={titleTextRef}
+          className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[180px] font-heading font-black uppercase text-brand-white relative z-10"
+          // El z-index es para que el título esté sobre el contenido de skills durante la transición
+          // Podrías necesitar ajustar el tamaño de fuente con Tailwind o style para que sea ENORME
+          // style={{ fontSize: 'clamp(4rem, 20vw, 15rem)'}} // Tamaño de fuente responsivo masivo
         >
-          {titleText.split('').map((char, index) => (
-            <span
-              key={index}
-              ref={el => { if (index === iIndex && el) letterIRef.current = el; }}
-              className="inline-block opacity-0"
-              style={{ willChange: 'transform, opacity' }}
-            >
-              {char}
-            </span>
-          ))}
-        </div>
+          {/* Si no usas SplitText, y quieres animar letra por letra, necesitas spans manuales:
+          <span>H</span><span>A</span><span>B</span><span>I</span><span>L</span><span className="target-letter">I</span><span>D</span><span>A</span><span>D</span><span>E</span><span>S</span>
+          Y luego seleccionar '.target-letter' en GSAP
+          */}
+          HABILIDADES
+        </h2>
+      </div>
 
-        <div
-          ref={skillsContentWrapperRef}
-          className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center opacity-0 z-20"
-        >
-          <div className="w-full max-w-4xl p-4 sm:p-6">
-            <h2 className="text-3xl sm:text-4xl font-heading text-brand-white text-center mb-8 md:mb-10">
-              Mis Herramientas
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8 md:gap-x-8 md:gap-y-10">
-              {skillsData.map((skill, index) => (
-                <SkillCard key={skill.name} name={skill.name} level={skill.level} delay={index * 0.04} />
-              ))}
-              <div className="bg-brand-black/50 opacity-0 backdrop-blur-md p-6 rounded-xl border-2 border-brand-red/70 shadow-lg flex flex-col justify-center items-center text-center">
-                  <h3 className="text-xl font-heading text-brand-white mb-2">Principios</h3>
-                  <p className="text-brand-white/70 font-sans text-sm">SOLID, KISS, DRY</p>
-              </div>
-            </div>
+      {/* Contenedor del Contenido de Habilidades (inicialmente oculto y escalado) */}
+      <div
+        ref={skillsContentRef}
+        className="relative z-0 w-full py-16 md:py-24" // z-0 para estar detrás del título durante la transición
+        // La altura de esta sección se sumará a la duración del pin
+      >
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <h3 className="text-3xl sm:text-4xl font-heading text-brand-red mb-12 md:mb-16 text-center">
+            Mis Herramientas y Tecnologías
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+            {skillsData.map((skill, index) => (
+              <SkillCard key={index} name={skill.name} level={skill.level} category={skill.category} />
+            ))}
           </div>
         </div>
       </div>
