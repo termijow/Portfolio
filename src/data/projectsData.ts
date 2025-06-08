@@ -64,7 +64,7 @@ export const projectsData: Project[] = [
     title: 'Motifs - Landing Page',
     description: 'Landing page atractiva para empresa de buzos prom, con optimización de procesos.',
     longDescription: 'Creación de una landing page con alto impacto visual para una marca de ropa enfocada en buzos de promoción estudiantil. Se integraron funcionalidades para optimizar la toma de pedidos y la comunicación con clientes, mejorando la conversión y la eficiencia operativa.',
-    image: '/images/projects/motifs-preview.jpg', // Necesitarás crear esta imagen
+    image: '/RoyalPainters.png', // Necesitarás crear esta imagen
     technologies: ['Next.js', 'Tailwind CSS', 'GSAP', 'Lenis'], // Ejemplo
     status: 'En desarrollo',
   },
@@ -73,7 +73,7 @@ export const projectsData: Project[] = [
     title: 'Motifs - Landing Page',
     description: 'Landing page atractiva para empresa de buzos prom, con optimización de procesos.',
     longDescription: 'Creación de una landing page con alto impacto visual para una marca de ropa enfocada en buzos de promoción estudiantil. Se integraron funcionalidades para optimizar la toma de pedidos y la comunicación con clientes, mejorando la conversión y la eficiencia operativa.',
-    image: '/images/projects/motifs-preview.jpg', // Necesitarás crear esta imagen
+    image: '/RoyalPainters.png', // Necesitarás crear esta imagen
     technologies: ['Next.js', 'Tailwind CSS', 'GSAP', 'Lenis'], // Ejemplo
     status: 'En desarrollo',
   },  
