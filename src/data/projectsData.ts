@@ -15,7 +15,7 @@ export const projectsData: Project[] = [
   {
     id: 'royalpainters',
     title: 'RoyalPainters.net',
-    description: 'Web para empresa de pintura y remodelación en USA, enfocada en captación de clientes.',
+    description: 'Web para empresa de pintura y remodelación en USA',
     longDescription: 'Desarrollo frontend y colaboración en backend para mejorar la presencia online y la captación de leads para una empresa de servicios de pintura y remodelación en Estados Unidos. Se implementaron formularios de contacto optimizados y una galería de proyectos visualmente atractiva.',
     image: '/RoyalPainters.png', // Necesitarás crear esta imagen
     technologies: ['React', 'Next.js', 'Tailwind CSS', 'Node.js'], // Ejemplo
