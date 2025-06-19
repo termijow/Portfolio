@@ -62,6 +62,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
           alt={`Vista previa de ${project.title}`}
           fill // Reemplaza width y height para que llene el contenedor
           className="object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
+          sizes="max-width: 768px"
         />
         {project.status && (
           <span className="absolute top-3 right-3 bg-brand-red text-brand-white text-xs font-semibold px-2.5 py-1 rounded-full">

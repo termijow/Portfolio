@@ -4,151 +4,130 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { SplitText } from 'gsap/SplitText'; // Necesitarás GSAP Club para SplitText, o una alternativa
+import { SplitText } from 'gsap/SplitText';
 
-gsap.registerPlugin(ScrollTrigger, SplitText); // Si usas SplitText oficial
+import { skillsList, Skill } from '@/data/skillsData'; // Ajusta la ruta
 
-// Lista de tus habilidades
-const skillsData = [
-  { name: 'JavaScript', level: 90, category: 'Frontend & Backend' },
-  { name: 'TypeScript', level: 85, category: 'Frontend & Backend' },
-  { name: 'React', level: 90, category: 'Frontend' },
-  { name: 'Next.js', level: 85, category: 'Frontend' },
-  { name: 'Node.js', level: 80, category: 'Backend' },
-  { name: 'NestJS', level: 80, category: 'Backend' },
-  { name: 'PostgreSQL', level: 75, category: 'Database' },
-  { name: 'MongoDB', level: 70, category: 'Database' },
-  { name: 'Git & GitHub', level: 90, category: 'Tools' },
-  { name: 'Docker', level: 65, category: 'Tools' },
-  { name: 'HTML5', level: 95, category: 'Frontend' },
-  { name: 'CSS3 & Tailwind', level: 90, category: 'Frontend' },
-];
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
-// Componente para una tarjeta de habilidad individual
-const SkillCard = ({ name, level, category }: { name: string; level: number; category: string }) => (
-  <div className="skill-card bg-brand-white/5 backdrop-blur-md border border-brand-white/10 rounded-xl p-6 shadow-lg
-                  hover:border-brand-red/50 transition-all duration-300 transform hover:-translate-y-1">
-    <h4 className="text-xl font-heading text-brand-red mb-2">{name}</h4>
-    <p className="text-sm text-brand-white/70 mb-3 font-sans">{category}</p>
-    <div className="w-full bg-brand-black/30 rounded-full h-2.5">
-      <div
-        className="bg-brand-red h-2.5 rounded-full"
-        style={{ width: `${level}%` }}
-      ></div>
-    </div>
-    <p className="text-xs text-brand-white/60 mt-2 text-right font-sans">{level}%</p>
+// Componente de Icono: Ajustes para responsividad y depuración de carga
+const SkillIconDisplay = ({ name, iconSrc }: Skill) => (
+  <div 
+    className="skill-icon-item flex flex-col items-center justify-center p-1.5 
+               bg-brand-white/5 backdrop-blur-sm border border-brand-white/10 rounded-md
+               transform transition-all duration-300 hover:scale-105 hover:bg-brand-white/10
+               w-[70px] h-[70px]  
+               xxs:w-20 xxs:h-20 
+               xs:w-24 xs:h-24 
+               sm:w-28 sm:h-28
+               md:w-64 md:h-64" // Tamaños progresivos para el contenedor del ícono
+  >
+    <img 
+      src={iconSrc} 
+      alt={`${name} icon`} 
+      className="object-contain mb-1 
+                 w-58 h-58 
+                 xxs:w-8 xxs:h-8 
+                 xs:w-10 xs:h-10 
+                 sm:w-12 sm:h-12
+                 md:w-48 md:h-48" // Tamaños progresivos para el SVG
+      onError={(e) => { 
+        console.error(`Error al cargar SVG: ${iconSrc}. Verifica la ruta y el archivo SVG.`);
+        const target = e.target as HTMLImageElement;
+        target.style.border = '1px solid red'; // Visual cue for missing image
+        // Opcional: Mostrar un texto de error en lugar del ícono
+        // target.style.display = 'none';
+        // if (target.parentElement) {
+        //   const errorText = target.parentElement.querySelector('.error-text');
+        //   if (!errorText) { // Evitar duplicados
+        //     target.parentElement.insertAdjacentHTML('beforeend', `<p class="error-text text-red-500 text-[8px] absolute bottom-1">Error</p>`);
+        //   }
+        // }
+      }}
+    />
+    <p 
+      className="text-center break-words max-w-full leading-tight font-sans text-brand-white/80
+                 text-[28px] 
+                 xxs:text-[28px] 
+                 xs:text-[28px] 
+                 sm:text-[28px]" // Tamaños progresivos para el texto
+    >
+      {name}
+    </p>
   </div>
 );
 
 export default function SkillsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const titleContainerRef = useRef<HTMLDivElement>(null);
-  const titleTextRef = useRef<HTMLHeadingElement>(null); // Para el texto "HABILIDADES"
-  const skillsContentRef = useRef<HTMLDivElement>(null); // Contenedor de las tarjetas de skills
+  const titleTextRef = useRef<HTMLHeadingElement>(null);
+  const skillsContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!sectionRef.current || !titleContainerRef.current || !titleTextRef.current || !skillsContentRef.current) return;
 
-    // Alternativa a SplitText si no tienes GSAP Club:
-    // Podrías envolver cada letra en un <span> manualmente en el JSX
-    // o usar una librería JS de terceros para dividir el texto.
-    // Por simplicidad conceptual, asumiré que tienes una forma de acceder a las letras.
-    // Si NO tienes SplitText, el efecto será más difícil de lograr exactamente como se describe.
-    // En ese caso, podríamos escalar todo el título.
-
     let splitTitle: SplitText | null = null;
     let targetLetter: HTMLElement | null = null;
 
-    // Intenta usar SplitText. Si falla, podríamos tener un fallback o un aviso.
+    // Lógica de SplitText (sin cambios)
     try {
       splitTitle = new SplitText(titleTextRef.current, { type: 'chars' });
-      // Seleccionamos la letra central o una específica. Ej: la 'I' o la 'L'
-      // "HABILIDADES" tiene 11 letras. La 6ta letra (índice 5) es 'I'.
-      if (splitTitle.chars.length > 5) {
-        targetLetter = splitTitle.chars[5] as HTMLElement; // La 'I'
-      } else {
-        targetLetter = titleTextRef.current; // Fallback: animar todo el título
-      }
+      targetLetter = splitTitle.chars.length > 5 ? splitTitle.chars[5] as HTMLElement : titleTextRef.current;
     } catch (e) {
-      console.warn("SplitText no está disponible (requiere GSAP Club). El efecto de zoom de letra será diferente.");
-      targetLetter = titleTextRef.current; // Fallback a animar todo el título
+      console.warn("SplitText no disponible. Usando fallback para animación de título.");
+      targetLetter = titleTextRef.current;
     }
 
-
     const ctx = gsap.context(() => {
-      // Timeline principal para la animación de zoom y revelado
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top top',       // Cuando la parte superior de la sección llega a la parte superior de la ventana
-          end: '+=200%',          // La animación durará el equivalente a 200% de la altura de la ventana de scroll
-          scrub: 1,              // Vinculado al scroll, con 1s de suavizado
-          pin: true,             // Fija la sección mientras dura la animación
-          anticipatePin: 1,      // Ayuda a evitar saltos en algunos navegadores
-          // markers: {startColor: "purple", endColor: "orange", indent: 200},
+          start: 'top top',
+          end: '+=200%', // Duración del pin
+          scrub: 1,
+          pin: true,
+          anticipatePin: 1,
+          // markers: true,
         }
       });
 
-      // 1. Animación del Título "HABILIDADES"
-      // Primero, el título está normal
       tl.set(titleTextRef.current, { opacity: 1, scale: 1 });
-      tl.set(skillsContentRef.current, { opacity: 0, scale: 0.5, y: 100 }); // Contenido de skills oculto
+      tl.set(skillsContentRef.current, { opacity: 0, scale: 0.5, y: 100 });
 
       if (targetLetter) {
-        // Hacer que las otras letras se desvanezcan (si tenemos SplitText)
-        if (splitTitle && splitTitle.chars) {
+        if (splitTitle && splitTitle.chars && targetLetter !== titleTextRef.current) {
           const otherChars = splitTitle.chars.filter(char => char !== targetLetter);
-          tl.to(otherChars, { opacity: 0, duration: 0.3, stagger:0.02 }, "<"); // "<" para iniciar al mismo tiempo que la animación anterior
+          tl.to(otherChars, { opacity: 0, duration: 0.3, stagger:0.02 }, "<");
         }
-
-        // 2. Zoom en la letra/título objetivo
         tl.to(targetLetter, {
-          scale: 50,            // Escala masiva
-          opacity: 0,          // Se desvanece mientras escala
-          duration: 1,         // Duración relativa dentro del scrub
-          ease: 'power2.inOut'
-        }, "-=0.2"); // Empieza un poco antes de que las otras letras terminen de desvanecerse
-      } else { // Fallback si no hay targetLetter (ej. no SplitText)
-         tl.to(titleTextRef.current, {
-          scale: 30,
+          scale: targetLetter === titleTextRef.current ? 30 : 50, // Ajustar escala si es fallback
           opacity: 0,
           duration: 1,
           ease: 'power2.inOut'
-        }, "<");
+        }, "-=0.2");
       }
 
-
-      // 3. Revelar el contenido de las habilidades
-      // Este contenido aparece "desde dentro" de la letra que se expande
       tl.to(skillsContentRef.current, {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        duration: 0.8,       // Duración relativa
-        ease: 'power3.out'
-      }, "-=0.7"); // Se superpone significativamente con el zoom out de la letra
+        opacity: 1, scale: 1, y: 0,
+        duration: 0.8, ease: 'power3.out'
+      }, "-=0.7");
 
-      // 4. Animación de entrada para las tarjetas de skills individuales
-      // Se activará después de que skillsContentRef sea visible
-      // Usaremos un trigger separado para esto, o un delay dentro de la misma timeline
-      // si la duración del pin es suficiente. Por ahora, lo haremos simple:
-      gsap.utils.toArray('.skill-card').forEach((card: any, index) => { // "any" aquí por simplicidad, podrías tiparlo mejor
-        gsap.fromTo(card,
+      gsap.utils.toArray<HTMLElement>('.skill-icon-item').forEach((item, index) => {
+        gsap.fromTo(item,
           { opacity: 0, y: 50, scale: 0.9 },
           {
             opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'power2.out',
             scrollTrigger: {
-              trigger: card,
-              start: 'top 90%', // Cuando la tarjeta entra en vista
-              // scrub: true, // Podrías añadir scrub aquí también si quieres
-              toggleActions: 'play none none none', // Solo se reproduce una vez
+              trigger: item,
+              // containerAnimation: tl,
+              start: 'bottom 95%', // Se activa un poco antes de que esté completamente visible
+              toggleActions: 'play none none none',
             },
-            delay: index * 0.1 // Stagger manual, ya que el trigger es por tarjeta
+            delay: index * 0.04 // Stagger un poco más rápido
           }
         );
       });
-
-    }, sectionRef.current); // Fin del contexto GSAP
+    }, sectionRef.current as Element);
 
     return () => ctx.revert();
   }, []);
@@ -157,41 +136,43 @@ export default function SkillsSection() {
     <section
       id="skills"
       ref={sectionRef}
-      className="relative w-full min-h-screen bg-brand-black text-brand-white overflow-hidden" // min-h-screen para el título, la altura real será mayor
+      className="relative w-full min-h-screen bg-brand-black text-brand-white overflow-hidden"
     >
-      {/* Contenedor del Título para el efecto de Pinning y Zoom */}
+      {/* Contenedor del Título */}
       <div
         ref={titleContainerRef}
-        className="h-screen w-full flex flex-col justify-center items-center sticky top-0" // Sticky y top-0 son importantes para el pin
+        className="h-screen w-full flex flex-col justify-center items-center sticky top-0 px-2" // Añadido px-2 para evitar que toque bordes en móviles
       >
         <h2
           ref={titleTextRef}
-          className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[180px] font-heading font-black uppercase text-brand-white relative z-10"
-          // El z-index es para que el título esté sobre el contenido de skills durante la transición
-          // Podrías necesitar ajustar el tamaño de fuente con Tailwind o style para que sea ENORME
-          // style={{ fontSize: 'clamp(4rem, 20vw, 15rem)'}} // Tamaño de fuente responsivo masivo
+          className="font-heading font-black uppercase text-brand-white relative z-10 text-center"
+          // Clamp más agresivo para asegurar visibilidad en móviles
+          // Mínimo: 2rem (32px), Ideal: 15vw, Máximo: 9rem (144px)
+          // Ajusta estos valores según tus preferencias visuales
+          style={{ fontSize: 'clamp(2rem, 15vw, 9rem)' }} 
         >
-          {/* Si no usas SplitText, y quieres animar letra por letra, necesitas spans manuales:
-          <span>H</span><span>A</span><span>B</span><span>I</span><span>L</span><span className="target-letter">I</span><span>D</span><span>A</span><span>D</span><span>E</span><span>S</span>
-          Y luego seleccionar '.target-letter' en GSAP
-          */}
           HABILIDADES
         </h2>
       </div>
 
-      {/* Contenedor del Contenido de Habilidades (inicialmente oculto y escalado) */}
+      {/* Contenedor del Contenido de Habilidades */}
       <div
         ref={skillsContentRef}
-        className="relative z-0 w-full py-16 md:py-24" // z-0 para estar detrás del título durante la transición
-        // La altura de esta sección se sumará a la duración del pin
+        className="relative z-0 w-full py-12 sm:py-16 md:py-24" // Reducido padding vertical para pantallas pequeñas
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h3 className="text-3xl sm:text-4xl font-heading text-brand-red mb-12 md:mb-16 text-center">
+        <div className="container mx-auto px-1 xxs:px-2 xs:px-3 sm:px-6 lg:px-8"> {/* Padding del container más ajustado en móviles */}
+          <h3 
+            className="font-heading text-brand-red text-center mb-6 sm:mb-8 md:mb-12
+                       text-xl xxs:text-2xl sm:text-3xl md:text-4xl" // Tamaño de fuente del subtítulo responsivo
+          >
             Mis Herramientas y Tecnologías
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-            {skillsData.map((skill, index) => (
-              <SkillCard key={index} name={skill.name} level={skill.level} category={skill.category} />
+          <div 
+            className="flex flex-wrap justify-center items-stretch 
+                       gap-1 xxs:gap-1.5 xs:gap-2 sm:gap-3 md:gap-4" // Gaps más pequeños en móviles
+          >
+            {skillsList.map((skill, index) => (
+              <SkillIconDisplay key={index} name={skill.name} iconSrc={skill.iconSrc} />
             ))}
           </div>
         </div>

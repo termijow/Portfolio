@@ -10,6 +10,11 @@ content: [
 ],
   theme: {
     extend: {
+      screens: {
+        'xxs': '360px', 
+        'xs': '480px',  
+        // sm, md, lg, xl, 2xl (ya vienen por defecto)
+      },
       colors: {
         'brand-black': '#0A0A0A', // Negro principal (fondo)
         'brand-red': '#E50914',   // Rojo de acento

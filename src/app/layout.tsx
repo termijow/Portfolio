@@ -1,9 +1,9 @@
 // src/app/layout.tsx
 import type { Metadata } from 'next';
 import './globals.css';
-import LenisSmoothScroll from '@/components/LenisSmoothScroll'; // Crearemos/verificaremos este
-import Navbar from '@/components/layout/Navbar';             // Crearemos este
-import Footer from '@/components/layout/Footer';             // Crearemos este
+import LenisSmoothScroll from '@/components/LenisSmoothScroll';
+import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
 
 export const metadata: Metadata = {
   title: 'Juan Diego Estrada - Fullstack Developer',
@@ -17,10 +17,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body>
+      {/* Añade suppressHydrationWarning aquí si el error es por cz-shortcut-listen */}
+      <body suppressHydrationWarning={true}> 
         <LenisSmoothScroll>
           <Navbar />
-          <main className="pt-16"> {/* Añadimos padding-top para que el contenido no quede debajo del Navbar fijo */}
+          <main className="pt-16">
             {children}
           </main>
           <Footer />
