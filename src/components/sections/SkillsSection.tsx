@@ -13,49 +13,43 @@ gsap.registerPlugin(ScrollTrigger, SplitText);
 // Componente de Icono: Ajustes para responsividad y depuración de carga
 const SkillIconDisplay = ({ name, iconSrc }: Skill) => (
   <div 
-    className="skill-icon-item flex flex-col items-center justify-center p-1.5 
+    className="skill-icon-item flex flex-col items-center justify-center p-2
                bg-brand-white/5 backdrop-blur-sm border border-brand-white/10 rounded-md
                transform transition-all duration-300 hover:scale-105 hover:bg-brand-white/10
-               w-[70px] h-[70px]  
-               xxs:w-20 xxs:h-20 
-               xs:w-24 xs:h-24 
-               sm:w-28 sm:h-28
-               md:w-64 md:h-64" // Tamaños progresivos para el contenedor del ícono
+               w-[80px] h-[80px]
+               xxs:w-[88px] xxs:h-[88px]
+               xs:w-[96px] xs:h-[96px]
+               sm:w-[112px] sm:h-[112px]
+               md:w-[256px] md:h-[256px]"
   >
     <img 
       src={iconSrc} 
       alt={`${name} icon`} 
-      className="object-contain mb-1 
-                 w-58 h-58 
-                 xxs:w-8 xxs:h-8 
-                 xs:w-10 xs:h-10 
-                 sm:w-12 sm:h-12
-                 md:w-48 md:h-48" // Tamaños progresivos para el SVG
+      className="object-contain mb-1
+                 w-[36px] h-[36px]
+                 xxs:w-[40px] xxs:h-[40px]
+                 xs:w-[48px] xs:h-[48px]
+                 sm:w-[56px] sm:h-[56px]
+                 md:w-[128px] md:h-[128px]"
       onError={(e) => { 
         console.error(`Error al cargar SVG: ${iconSrc}. Verifica la ruta y el archivo SVG.`);
         const target = e.target as HTMLImageElement;
-        target.style.border = '1px solid red'; // Visual cue for missing image
-        // Opcional: Mostrar un texto de error en lugar del ícono
-        // target.style.display = 'none';
-        // if (target.parentElement) {
-        //   const errorText = target.parentElement.querySelector('.error-text');
-        //   if (!errorText) { // Evitar duplicados
-        //     target.parentElement.insertAdjacentHTML('beforeend', `<p class="error-text text-red-500 text-[8px] absolute bottom-1">Error</p>`);
-        //   }
-        // }
+        target.style.border = '1px solid red';
       }}
     />
     <p 
       className="text-center break-words max-w-full leading-tight font-sans text-brand-white/80
-                 text-[28px] 
-                 xxs:text-[28px] 
-                 xs:text-[28px] 
-                 sm:text-[28px]" // Tamaños progresivos para el texto
+                 text-[12px]
+                 xxs:text-[13px]
+                 xs:text-[14px]
+                 sm:text-[16px]
+                 md:text-[18px]"
     >
       {name}
     </p>
   </div>
 );
+
 
 export default function SkillsSection() {
   const sectionRef = useRef<HTMLElement>(null);
