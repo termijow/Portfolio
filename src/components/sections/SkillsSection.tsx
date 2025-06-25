@@ -20,7 +20,7 @@ const SkillIconDisplay = ({ name, iconSrc }: Skill) => (
                xxs:w-[88px] xxs:h-[88px]
                xs:w-[96px] xs:h-[96px]
                sm:w-[112px] sm:h-[112px]
-               md:w-[256px] md:h-[256px]"
+               md:w-[224px] md:h-[224px]"
   >
     <img 
       src={iconSrc} 
@@ -156,8 +156,7 @@ export default function SkillsSection() {
       >
         <div className="container mx-auto px-1 xxs:px-2 xs:px-3 sm:px-6 lg:px-8"> {/* Padding del container más ajustado en móviles */}
           <h3 
-            className="font-heading text-brand-red text-center mb-6 sm:mb-8 md:mb-12
-                       text-xl xxs:text-2xl sm:text-3xl md:text-4xl" // Tamaño de fuente del subtítulo responsivo
+          className="text-4xl sm:text-5xl md:text-7xl font-heading font-black text-brand-white text-center mb-16 md:mb-24 opacity-1"
           >
             Mis Herramientas y Tecnologías
           </h3>

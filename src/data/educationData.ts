@@ -17,8 +17,10 @@ export const educationData: EducationItem[] = [
     title: 'Tecnología en Desarrollo de Software',
     institution: 'Universidad Minuto de Dios (UNIMINUTO)',
     period: '2024 - 2026 (Cursando)',
-    description: 'Formación integral en los fundamentos del desarrollo de software, metodologías ágiles, bases de datos, y arquitecturas de aplicaciones.',
+    description: 'Formación en los fundamentos del Desarrollo de Software, Metodologías ágiles, Bases de datos y Desarrollo Web.',
     icon: '/uniminuto-logo.jpeg',
+    technologies: ['Java', 'MySQL', 'JavaScript', 'React', 'Node.js', 'HTML', 'CSS'],
+
   },
   {
     id: 'platzi-fsjs',
@@ -26,7 +28,7 @@ export const educationData: EducationItem[] = [
     title: 'Full Stack Developer con JavaScript',
     institution: 'Platzi',
     period: 'Finalizado en 2023',
-    description: 'Desarrollo de habilidades full-stack utilizando JavaScript, cubriendo desde el frontend con React hasta el backend con Node.js y bases de datos.',
+    description: 'Desarrollo de habilidades full-stack utilizando JavaScript, desde el frontend con React hasta el backend con Node.js.',
     icon: '/platzi-logo.png', // Necesitarás este logo
     technologies: ['JavaScript', 'React', 'Node.js', 'HTML', 'CSS'],
   },
@@ -36,7 +38,7 @@ export const educationData: EducationItem[] = [
     title: 'Nest: Desarrollo de Backend Escalable con Node',
     institution: 'Udemy (Fernando Herrera)',
     period: 'Finalizado en 2023',
-    description: 'Profundización en el desarrollo de APIs robustas y escalables utilizando NestJS, TypeORM, y buenas prácticas de backend.',
+    description: 'Curso avanzado enfocado en el desarrollo de APIs escalables con NestJS y TypeORM, aplicando principios sólidos de arquitectura backend y buenas prácticas de desarrollo.',
     icon: '/udemy-logo.webp', // Necesitarás este logo
     technologies: ['NestJS', 'Node.js', 'TypeScript', 'TypeORM', 'JWT'],
   },
@@ -57,10 +59,10 @@ export const educationData: EducationItem[] = [
     title: 'Aprendizaje Autodidacta Continuo',
     period: 'Desde 2022 - Presente',
     description: [
-      'Desarrollo proactivo de APIs RESTful robustas y eficientes, integrando tecnologías como MongoDB, PostgreSQL y Docker para la gestión de datos y contenedores.',
-      'Aplicación consistente de principios de diseño de software como SOLID, KISS y DRY para asegurar la mantenibilidad, escalabilidad y calidad del código.',
-      'Exploración y dominio de herramientas y frameworks modernos tanto en backend (NestJS) como en frontend (React, Next.js), manteniéndome actualizado con las tendencias de la industria.'
+      'Desarrollo de APIs RESTful integrando tecnologías como MongoDB, PostgreSQL y Docker para la gestión de datos y contenedores.',
+      'Aplicación de principios de diseño de software como SOLID, KISS y DRY',
+      'Dominio de herramientas modernas tanto en backend (NestJS) como en frontend (React, Next.js), experimentando con nuevas tecnologías y tendencias de la industria.'
     ],
-    technologies: ['MongoDB', 'PostgreSQL', 'Docker', 'REST APIs', 'SOLID', 'KISS', 'DRY'],
+    technologies: ['MongoDB', 'PostgreSQL', 'Docker', 'REST APIs', 'SOLID', 'KISS', 'DRY', 'NextJS'],
   },
 ];

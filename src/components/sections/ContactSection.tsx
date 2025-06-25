@@ -95,29 +95,23 @@ export default function ContactSection() {
       label: 'Enviar correo electrónico'
     },
     { 
-      icon: <PhoneIcon />, 
-      text: '+57 3012542340', 
-      href: 'tel:+573012542340',
-      label: 'Llamar por teléfono'
-    },
-    { 
       icon: <LinkedinIcon />, 
       text: 'LinkedIn', 
-      href: 'https://www.linkedin.com/in/juan-diego-estrada-ceballos-19807723a/', // Reemplaza con tu URL real
+      href: 'https://www.linkedin.com/in/juan-diego-estrada-9154981b7/', // Reemplaza con tu URL real
       label: 'Perfil de LinkedIn',
       target: '_blank'
     },
     { 
       icon: <GithubIcon />, 
       text: 'GitHub', 
-      href: 'https://github.com/JuandiEstrada', // Reemplaza con tu URL real
+      href: 'https://github.com/termijow/', // Reemplaza con tu URL real
       label: 'Perfil de GitHub',
       target: '_blank'
     },
     { 
       icon: <MapPinIcon />, 
-      text: 'Villavicencio, Meta, Colombia', 
-      type: 'text' // No es un enlace
+      text: 'Colombia', 
+      type: 'text'
     },
   ];
 
@@ -153,9 +147,7 @@ export default function ContactSection() {
           ref={cardRef}
           className="max-w-2xl mx-auto bg-brand-black/50 backdrop-blur-xl rounded-2xl shadow-2xl border border-brand-white/10 p-8 sm:p-10 md:p-12 opacity-0"
         >
-          <p className="text-brand-white/80 font-sans text-lg text-center mb-8">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil aut, placeat quo illum nostrum itaque dolore
-          </p>
+
 
           <div className="space-y-6">
             {contactInfo.map((item, index) => (

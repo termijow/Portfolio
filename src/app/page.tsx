@@ -11,14 +11,11 @@ export default function HomePage() {
   return (
     <>
       <HeroSection />
-      <SkillsSection />
       <AboutSection />
+      <SkillsSection />
       <ProjectsSection />
       <EducationSection/>
       <ContactSection />
-
-
-      
     </>
   );
 }
