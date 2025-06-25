@@ -137,7 +137,8 @@
               Fullstack Developer
             </h2>
             <p ref={subtitleRef} className="text-sm xs:text-base sm:text-lg md:text-xl text-brand-white/80 font-sans max-w-md sm:max-w-lg md:max-w-xl mx-auto mb-8 sm:mb-10 opacity-0">
-              Transformando ideas en soluciones web <span className="text-brand-red font-semibold">innovadoras</span> y <span className="text-brand-red font-semibold">eficientes</span>.
+              Transformando ideas en soluciones web <span className="text-brand-red font-semibold">innovadoras</span>.
+               {/* y <span className="text-brand-red font-semibold">eficientes</span>. */}
             </p>
             <div ref={ctaRef} className="opacity-0">
               <Link

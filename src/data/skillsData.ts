@@ -21,7 +21,7 @@ const iconFileNames = [
 ];
 
 const formatSkillName = (fileName: string): string => {
-  let name = fileName.replace('-original', '').replace('-plain', '');
+  const name = fileName.replace('-original', '').replace('-plain', '');
   
   if (name === 'css3') return 'CSS3';
   if (name === 'html5') return 'HTML5';

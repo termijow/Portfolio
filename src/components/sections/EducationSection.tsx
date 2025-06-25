@@ -11,8 +11,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 // EducationCard (sin cambios respecto a la última versión que te di)
 // ... (Pega aquí el código completo del componente EducationCard que ya tenías)
-interface EducationCardProps { item: EducationItem; index: number; isLeftAligned: boolean; }
-const EducationCard: React.FC<EducationCardProps> = ({ item, index, isLeftAligned }) => {
+interface EducationCardProps { item: EducationItem;  isLeftAligned: boolean; }
+const EducationCard: React.FC<EducationCardProps> = ({ item, isLeftAligned }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!cardRef.current) return;
@@ -250,7 +250,6 @@ export default function EducationSection() {
               {index % 2 !== 0 && <div className="hidden md:block md:w-[45%]"></div>}
               <EducationCard
                 item={item}
-                index={index}
                 isLeftAligned={index % 2 === 0}
               />
               {index % 2 === 0 && <div className="hidden md:block md:w-[45%]"></div>}
