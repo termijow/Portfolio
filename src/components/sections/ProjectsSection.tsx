@@ -90,9 +90,6 @@ export default function ProjectsSection() {
           if (projectsContainerRef.current) {
             const cards = Array.from(projectsContainerRef.current.children) as HTMLElement[];
             if (cards.length > 0) {
-              const cardStyle = window.getComputedStyle(cards[0].parentElement!);
-              const cardWidth = cards[0].offsetWidth;
-              const marginRight = parseFloat(window.getComputedStyle(cards[0]).marginRight);
               
               let totalContentWidth = 0;
               cards.forEach((cardWrapper) => {
@@ -208,7 +205,7 @@ export default function ProjectsSection() {
       ></div>
 
       {/* Renderizado de Elementos Decorativos */}
-      {decorativeAssets.map((asset, index) => {
+      {decorativeAssets.map((asset) => {
         let styleClasses = "";
         let extraStyle: React.CSSProperties = {};
         switch (asset.styleType) {
@@ -247,7 +244,7 @@ export default function ProjectsSection() {
           className="flex flex-nowrap md:items-center px-4 sm:px-6 lg:px-8"
           style={{ paddingRight: `calc(50vw - (${'30vw'} * 0.5))`, marginTop: 124}} // Ajustar 30vw al ancho de tarjeta xl
         >
-          {projectsData.map((project, index) => (
+          {projectsData.map((project) => (
             <div key={project.id} className="flex-shrink-0 w-[85vw] sm:w-[70vw] md:w-[40vw] lg:w-[33vw] xl:w-[30vw] max-w-xs sm:max-w-sm md:max-w-md mr-6 md:mr-8 last:mr-4 md:last:mr-0">
               <ProjectCard project={project}/>
             </div>

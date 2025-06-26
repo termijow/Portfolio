@@ -72,7 +72,7 @@ export default function SkillsSection() {
       splitTitle = new SplitText(titleTextRef.current, { type: 'chars' });
       targetLetter = splitTitle.chars.length > 5 ? splitTitle.chars[5] as HTMLElement : titleTextRef.current;
     } catch (e) {
-      console.warn("SplitText no disponible. Usando fallback para animación de título.");
+      console.warn("SplitText no disponible. Usando fallback para animación de título: ", e);
       targetLetter = titleTextRef.current;
     }
 
