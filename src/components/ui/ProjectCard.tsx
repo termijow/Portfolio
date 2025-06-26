@@ -5,7 +5,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger'; // Si quieres animaciones por tarjeta
 import type { Project } from '@/data/projectsData'; // Importa la interfaz
 
 // Iconos simples para enlaces (puedes reemplazarlos con SVGs reales o una librería de iconos)
@@ -26,7 +25,7 @@ interface ProjectCardProps {
   index?: number; // Para stagger en animaciones
 }
 
-export default function ProjectCard({ project, index }: ProjectCardProps) {
+export default function ProjectCard({ project }: ProjectCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
