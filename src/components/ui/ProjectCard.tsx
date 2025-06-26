@@ -23,7 +23,7 @@ const GitHubIcon = () => (
 
 interface ProjectCardProps {
   project: Project;
-  index: number; // Para stagger en animaciones
+  index?: number; // Para stagger en animaciones
 }
 
 export default function ProjectCard({ project, index }: ProjectCardProps) {
@@ -51,8 +51,8 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
     <div
       ref={cardRef}
       className="opacity-0 flex flex-col 
-                 bg-brand-black/10 backdrop-blur-lg // CAMBIO: bg-brand-black/10 (o bg-brand-white/2 o /3 para más claro)
-                 rounded-2xl shadow-2xl border border-brand-white/5 // CAMBIO: border-brand-white/5 (más sutil)
+                 bg-brand-black/10 backdrop-blur-lg
+                 rounded-2xl shadow-2xl border border-brand-white/5
                  overflow-hidden group transition-all duration-300 ease-out 
                  hover:shadow-brand-red/25 hover:border-brand-red/40 hover:scale-[1.02]"
     >

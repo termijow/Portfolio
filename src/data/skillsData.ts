@@ -42,5 +42,3 @@ export const skillsList: Skill[] = iconFileNames.map(fileName => ({
   name: formatSkillName(fileName),
   iconSrc: `/images/skills/${fileName}.svg`,
 }));
-
-console.log(skillsList);

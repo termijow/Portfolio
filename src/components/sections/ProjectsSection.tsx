@@ -9,49 +9,6 @@ import ProjectCard from '@/components/ui/ProjectCard';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// SkillsData y SkillCard (sin cambios, asumo que ya los tienes como antes)
-// ... (código de SkillCard y skillsData) ...
-const skillsData = [
-  { name: 'JavaScript', level: 90 }, { name: 'TypeScript', level: 85 },
-  { name: 'React', level: 90 }, { name: 'Next.js', level: 80 },
-  { name: 'Node.js', level: 85 }, { name: 'NestJS', level: 80 },
-  { name: 'PostgreSQL', level: 75 }, { name: 'MongoDB', level: 70 },
-  { name: 'HTML5', level: 95 }, { name: 'CSS3 & Tailwind', level: 90 },
-  { name: 'Git & GitHub', level: 85 }, { name: 'Docker', level: 65 },
-];
-interface SkillCardProps { name: string; level: number; delay?: number; }
-const SkillCard: React.FC<SkillCardProps> = ({ name, level, delay = 0 }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const progressBarRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (cardRef.current && progressBarRef.current) {
-      const cardEl = cardRef.current;
-      const progressEl = progressBarRef.current;
-      let anim: gsap.core.Tween | undefined, progressAnim: gsap.core.Tween | undefined;
-      const st = ScrollTrigger.create({
-        trigger: cardEl, start: 'top 90%', toggleActions: 'play none none reset',
-        onEnter: () => {
-          gsap.set(cardEl, { opacity: 0, y: 50, scale: 0.9 });
-          gsap.set(progressEl, { width: '0%' });
-          anim = gsap.to(cardEl, { opacity: 1, y: 0, scale: 1, duration: 0.8, delay, ease: 'power3.out' });
-          progressAnim = gsap.to(progressEl, { width: `${level}%`, duration: 1.5, delay: delay + 0.3, ease: 'power2.inOut' });
-        },
-        onLeaveBack: () => { if (anim) anim.reverse(); if (progressAnim) progressAnim.reverse(); }
-      });
-      return () => { st.kill(); if (anim) anim.kill(); if (progressAnim) progressAnim.kill(); };
-    }
-  }, [name, level, delay]);
-  return (
-    <div ref={cardRef} className="bg-brand-black/15 opacity-0 backdrop-blur-lg p-6 rounded-2xl border border-brand-white/5 shadow-2xl group transition-all duration-300 ease-out hover:shadow-brand-red/25 hover:border-brand-red/40 hover:scale-[1.02]">
-      <h3 className="text-xl font-heading text-brand-white mb-2 group-hover:text-brand-red transition-colors">{name}</h3>
-      <div className="w-full bg-brand-white/20 rounded-full h-2.5">
-        <div ref={progressBarRef} className="bg-brand-red h-2.5 rounded-full" style={{ width: '0%' }}></div>
-      </div>
-    </div>
-  );
-};
-
-
 // Definición de tipos para los assets decorativos
 type DecoAsset = {
   id: string;
@@ -292,7 +249,7 @@ export default function ProjectsSection() {
         >
           {projectsData.map((project, index) => (
             <div key={project.id} className="flex-shrink-0 w-[85vw] sm:w-[70vw] md:w-[40vw] lg:w-[33vw] xl:w-[30vw] max-w-xs sm:max-w-sm md:max-w-md mr-6 md:mr-8 last:mr-4 md:last:mr-0">
-              <ProjectCard project={project} index={index} />
+              <ProjectCard project={project}/>
             </div>
           ))}
         </div>

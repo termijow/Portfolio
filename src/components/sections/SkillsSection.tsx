@@ -7,6 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 
 import { skillsList, Skill } from '@/data/skillsData'; // Ajusta la ruta
+import Image from 'next/image';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -22,7 +23,7 @@ const SkillIconDisplay = ({ name, iconSrc }: Skill) => (
                sm:w-[112px] sm:h-[112px]
                md:w-[224px] md:h-[224px]"
   >
-    <img 
+    <Image 
       src={iconSrc} 
       alt={`${name} icon`} 
       className="object-contain mb-1
@@ -31,6 +32,9 @@ const SkillIconDisplay = ({ name, iconSrc }: Skill) => (
                  xs:w-[48px] xs:h-[48px]
                  sm:w-[56px] sm:h-[56px]
                  md:w-[128px] md:h-[128px]"
+      width={128}
+      height={128}
+      loading="lazy"
       onError={(e) => { 
         console.error(`Error al cargar SVG: ${iconSrc}. Verifica la ruta y el archivo SVG.`);
         const target = e.target as HTMLImageElement;
