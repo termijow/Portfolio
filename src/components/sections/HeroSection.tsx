@@ -95,14 +95,17 @@
         heroRef.current.addEventListener('mousemove', handleMouseMove);
       }
 
+    const currentHeroRef = heroRef.current; 
+    if (currentHeroRef) {
+      currentHeroRef.addEventListener('mousemove', handleMouseMove);
+    }
+
       return () => {
-        if (heroRef.current) {
-          heroRef.current.removeEventListener('mousemove', handleMouseMove);
-        }
-        // tl.kill(); // Podrías matar la timeline
-        // parallaxTargets.forEach(target => target.el && gsap.killTweensOf(target.el)); // Y los tweens de parallax
+      if (currentHeroRef) { // Usar la variable local
+        currentHeroRef.removeEventListener('mousemove', handleMouseMove);
       };
-    }, []);
+    }
+  },[]);
 
     // Clases comunes para las formas decorativas glass con borde rojo
     const bauhausGlassShapeBase = "absolute bg-brand-black/20 backdrop-blur-md border-2 border-brand-red rounded-lg opacity-0 pointer-events-none";
