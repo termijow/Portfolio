@@ -91,9 +91,9 @@ export default function AboutSection() {
   }, []);
 
   const aboutText = [
-    `Soy un Desarrollador Fullstack con un fuerte interés en el desarrollo web. Poseo habilidades para trabajar eficientemente en equipos y una actitud de aprendizaje constante.`,
-    `Estoy comprometido con la mejora de mis habilidades y la producción de código de alta calidad. Me entusiasma tener la oportunidad de trabajar en proyectos desafiantes y mejorar mis habilidades como Desarrollador Fullstack.`,
-    `Actualmente estudio tecnología en desarrollo de software en la universidad Minuto de Dios (2024-2026) y he completado cursos especializados en Platzi y Udemy, incluyendo desarrollo backend escalable con NestJS.`
+    `Soy un Desarrollador Fullstack especializado el desarrollo web. Poseo habilidades para trabajar eficientemente en equipos y una actitud de aprendizaje constante.`,
+    `Estoy comprometido mejorar mis habilidades y producir software de calidad. Me entusiasma tener la oportunidad de trabajar en proyectos desafiantes y mejorar mis habilidades como Desarrollador Fullstack.`,
+    `Actualmente soy estudiante de tecnología en desarrollo de software en la universidad Minuto de Dios (2024-2026) y he completado cursos especializados en Platzi y Udemy, incluyendo desarrollo backend escalable con NestJS.`
   ];
 
   const bauhausGlassShapeBase = "absolute bg-brand-black/20 backdrop-blur-md border-2 border-brand-red pointer-events-none";
